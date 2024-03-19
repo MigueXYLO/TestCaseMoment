@@ -82,10 +82,12 @@ public class Contact {
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof Contact
-                && (
-                Objects.equals(this.phone, ((Contact) o).phone) || Objects.equals(this.email, ((Contact) o).email)
-        );
+        if (!(o instanceof Contact another)) return false;
+        if (!Objects.equals(this.firstName, another.firstName)) return false;
+        if (!Objects.equals(this.lastName, another.lastName)) return false;
+        if (!Objects.equals(this.birthday, another.birthday)) return false;
+        if (!Objects.equals(this.phone, another.phone)) return false;
+        return Objects.equals(this.email, another.email);
     }
     @Override
     public int hashCode() {

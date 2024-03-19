@@ -2,6 +2,9 @@ package pt.ipleiria.estg.dei.ei.esoft;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+
 public class ContactsManager {
     private final List<Contact> contacts;
     private final HashMap<String, List<Contact>> labels;
@@ -39,24 +42,27 @@ public class ContactsManager {
     }
 
     public void addContact(Contact contact, String... labels) {
-        // TODO add contact and associate it with the labels, if any
-        // DO NOT ALLOW TO ADD DUPLICATED CONTACTS (same phone and/or email)
-        if (!contacts.contains(contact)) contacts.add(contact);
+        Predicate<Contact> duplicate = c -> Objects.equals(c.getPhone(), contact.getPhone()) && Objects.equals(c.getEmail(), contact.getEmail());
+
+        if (contacts.stream().noneMatch(duplicate)) contacts.add(contact);
         for (var label : labels) {
             if (!this.labels.containsKey(label)) {
                 this.labels.put(label, new LinkedList<>());
             }
             var contactsLabel = this.labels.get(label);
-
-            if (!contactsLabel.contains(contact)) {
+            if (!contacts.stream().noneMatch(duplicate)) {
                 contactsLabel.add(contact);
             }
         }
     }
 
+
     public void removeContact(Contact contact) {
-        contacts.remove(contact);
-        labels.values().forEach(contacts -> contacts.remove(contact));
+        if (contacts.contains(contact)) {
+            contacts.remove(contact);
+            labels.values().forEach(contacts -> contacts.remove(contact));
+        }
+
     }
 
     public int size() {
