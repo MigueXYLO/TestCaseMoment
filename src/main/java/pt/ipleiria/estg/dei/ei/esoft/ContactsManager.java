@@ -37,6 +37,7 @@ public class ContactsManager {
         }
         return result;
     }
+
     public void addContact(Contact contact, String... labels) {
         // TODO add contact and associate it with the labels, if any
         // DO NOT ALLOW TO ADD DUPLICATED CONTACTS (same phone and/or email)
@@ -51,17 +52,18 @@ public class ContactsManager {
                 contactsLabel.add(contact);
             }
         }
-
-
     }
+
     public void removeContact(Contact contact) {
-        // TODO remove the contact
         contacts.remove(contact);
-        for (List<Contact> list : labels.values()) {
-            list.remove(contact);
-        }
+        labels.values().forEach(contacts -> contacts.remove(contact));
     }
+
     public int size() {
         return contacts.size();
+    }
+
+    public boolean isEmpty() {
+        return contacts.isEmpty();
     }
 }

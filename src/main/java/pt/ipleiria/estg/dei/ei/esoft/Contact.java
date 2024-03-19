@@ -82,14 +82,11 @@ public class Contact {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Contact another)) return false;
-        if (this.firstName != another.firstName) return false;
-        if (this.lastName != another.lastName) return false;
-        if (this.birthday != another.birthday) return false;
-        if (this.phone != another.phone) return false;
-        return this.email == another.email;
+        return o instanceof Contact
+                && (
+                Objects.equals(this.phone, ((Contact) o).phone) || Objects.equals(this.email, ((Contact) o).email)
+        );
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, birthday, phone, email);
