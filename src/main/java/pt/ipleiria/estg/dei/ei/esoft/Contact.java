@@ -1,6 +1,8 @@
 package pt.ipleiria.estg.dei.ei.esoft;
 
 import java.util.Date;
+import java.util.Objects;
+
 public class Contact {
     private String firstName;
     private String lastName;
@@ -77,4 +79,20 @@ public class Contact {
 
     // TODO Generate constructors
     // TODO Generate getters and setters
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Contact another)) return false;
+        if (this.firstName != another.firstName) return false;
+        if (this.lastName != another.lastName) return false;
+        if (this.birthday != another.birthday) return false;
+        if (this.phone != another.phone) return false;
+        return this.email == another.email;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, birthday, phone, email);
+    }
+
 }

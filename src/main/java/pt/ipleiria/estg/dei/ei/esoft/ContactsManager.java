@@ -3,8 +3,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 public class ContactsManager {
-    private List<Contact> contacts;
-    private HashMap<String, List<Contact>> labels;
+    private final List<Contact> contacts;
+    private final HashMap<String, List<Contact>> labels;
     public ContactsManager() {
         contacts = new LinkedList<>();
         labels = new HashMap<>(200);
@@ -40,16 +40,18 @@ public class ContactsManager {
     public void addContact(Contact contact, String... labels) {
         // TODO add contact and associate it with the labels, if any
         // DO NOT ALLOW TO ADD DUPLICATED CONTACTS (same phone and/or email)
-        if (contacts.contains(contact)) {
-            return;
-        }
-        contacts.add(contact);
-        for (String label : labels) {
+        if (!contacts.contains(contact)) contacts.add(contact);
+        for (var label : labels) {
             if (!this.labels.containsKey(label)) {
                 this.labels.put(label, new LinkedList<>());
             }
-            this.labels.get(label).add(contact);
+            var contactsLabel = this.labels.get(label);
+
+            if (!contactsLabel.contains(contact)) {
+                contactsLabel.add(contact);
+            }
         }
+
 
     }
     public void removeContact(Contact contact) {
